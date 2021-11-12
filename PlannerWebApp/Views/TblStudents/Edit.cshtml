@@ -1,0 +1,59 @@
+﻿@model PlannerLibrary.DbModels.TblStudent
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>TblStudent</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="StudentNumber" />
+            <div class="form-group">
+                <label asp-for="StudentName" class="control-label"></label>
+                <input asp-for="StudentName" class="form-control" />
+                <span asp-validation-for="StudentName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StudentSurname" class="control-label"></label>
+                <input asp-for="StudentSurname" class="form-control" />
+                <span asp-validation-for="StudentSurname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StudentEmail" class="control-label"></label>
+                <input asp-for="StudentEmail" class="form-control" />
+                <span asp-validation-for="StudentEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StudentHashPassword" class="control-label"></label>
+                <input asp-for="StudentHashPassword" class="form-control" />
+                <span asp-validation-for="StudentHashPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label"></label>
+                <input asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NumberOfWeeks" class="control-label"></label>
+                <input asp-for="NumberOfWeeks" class="form-control" />
+                <span asp-validation-for="NumberOfWeeks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
