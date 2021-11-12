@@ -1,16 +1,23 @@
-﻿using PlannerLibrary.DbModels;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace PlannerLibrary.Models
 {
-    public class Student
+    public class StudentSignup
     {
+        [Required]
         public int StudentNumber { get; set; }
+        [Required]
         public string StudentName { get; set; }
+        [Required]
         public string StudentSurname { get; set; }
+        [Required]
         public string StudentEmail { get; set; }
+        [Required]
         public string StudentHashPassword { get; set; }
-        public DateTime StartDate { get; set; }
-        public int NumberOfWeeks { get; set; }
     }
 }

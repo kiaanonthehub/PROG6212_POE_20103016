@@ -1,4 +1,4 @@
-﻿@model PlannerLibrary.Models.Student
+﻿@model PlannerLibrary.Models.StudentSignup
 
 @{
     ViewData["Title"] = "Create";
@@ -34,6 +34,9 @@
                 <label asp-for="StudentHashPassword" class="control-label"></label>
                 <input asp-for="StudentHashPassword" class="form-control" />
                 <span asp-validation-for="StudentHashPassword" class="text-danger"></span>
+                <div class="text-danger">
+                    @ViewBag.Password
+                </div>
             </div>
             <div class="form-group">
                 <input type="submit" value="Sign up" class="btn btn-primary" />

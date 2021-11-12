@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PlannerLibrary.DbModels;
 using PlannerLibrary.Models;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -97,7 +98,7 @@ namespace PlannerWebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Signup([Bind("StudentNumber,StudentName,StudentSurname,StudentEmail,StudentHashPassword")] Student student)
+        public async Task<IActionResult> Signup([Bind("StudentNumber,StudentName,StudentSurname,StudentEmail,StudentHashPassword")] StudentSignup student)
         {
             try
             {
@@ -119,7 +120,11 @@ namespace PlannerWebApp.Controllers
             }
             catch (DbUpdateException)
             {
-                ViewBag.UserExits = "This user already exits. Login using the link below.";
+                ViewBag.UserExits = "This user already exits. Please check your details and try again or login below.";
+            }
+            catch (ArgumentNullException)
+            {
+                ViewBag.Password = "Please enter a valid password.";
             }
 
             return View(student);
@@ -135,37 +140,37 @@ namespace PlannerWebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login([Bind("StudentNumber,StudentHashPassword")] TblStudent tblStudent)
+        public async Task<IActionResult> Login([Bind("StudentNumber,StudentHashPassword")] StudentLogin login)
         {
             if (ModelState.IsValid)
             {
                 // validate if student login details exits
                 TblStudent filtStudentDetails = await Task.Run(() => db.TblStudents
-                                        .Where(x => x.StudentNumber == tblStudent.StudentNumber)
+                                        .Where(x => x.StudentNumber == login.StudentNumber)
                                         .FirstOrDefaultAsync());
 
                 // retrive hashed password from database
                 string dbHashPassword = await Task.Run(() => db.TblStudents
-                                        .Where(x => x.StudentNumber == tblStudent.StudentNumber)
+                                        .Where(x => x.StudentNumber == login.StudentNumber)
                                         .Select(x => x.StudentHashPassword)
                                         .FirstOrDefaultAsync());
 
                 if (dbHashPassword == null)
                 {
                     ViewBag.InvalidDetails = "Invalid credentials. Please try again.";
-                    return View(tblStudent);
+                    return View(login);
                 }
                 else
                 {
                     try
                     {
                         // verify if user password is the same as hashed password in the database
-                        bool verify = await Task.Run(() => BCrypt.Net.BCrypt.Verify(tblStudent.StudentHashPassword, dbHashPassword));
+                        bool verify = await Task.Run(() => BCrypt.Net.BCrypt.Verify(login.StudentHashPassword, dbHashPassword));
 
                         // conditional statement
                         if (filtStudentDetails != null && verify == true)
                         {
-                            return RedirectToAction("Index", "Students");
+                            return RedirectToAction("SemesterDetails", "TblStudents");
                         }
                         else
                         {
@@ -178,7 +183,7 @@ namespace PlannerWebApp.Controllers
                     }
                 }
             }
-            return View(tblStudent);
+            return View(login);
         }
 
 
