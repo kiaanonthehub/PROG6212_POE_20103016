@@ -18,8 +18,8 @@ namespace PlannerLibrary.DbModels
         public string StudentSurname { get; set; }
         public string StudentEmail { get; set; }
         public string StudentHashPassword { get; set; }
-        public DateTime StartDate { get; set; }
-        public int NumberOfWeeks { get; set; }
+        public DateTime? StartDate { get; set; }
+        public int? NumberOfWeeks { get; set; }
 
         public virtual ICollection<TblStudentModule> TblStudentModules { get; set; }
         public virtual ICollection<TblTrackStudy> TblTrackStudies { get; set; }

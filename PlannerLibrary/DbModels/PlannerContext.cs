@@ -71,7 +71,7 @@ namespace PlannerLibrary.DbModels
                 entity.Property(e => e.NumberOfWeeks).HasColumnName("number_of_weeks");
 
                 entity.Property(e => e.StartDate)
-                    .HasColumnType("date")
+                    .HasColumnType("datetime")
                     .HasColumnName("start_date");
 
                 entity.Property(e => e.StudentEmail)

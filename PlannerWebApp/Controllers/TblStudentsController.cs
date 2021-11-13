@@ -83,8 +83,8 @@ namespace PlannerLibrary.Controllers
                 tblStudent.StartDate = semester.StartDate;
                 tblStudent.NumberOfWeeks = semester.NumberOfWeeks;
 
-                Global.StartDate = tblStudent.StartDate;
-                Global.StudentNumber = tblStudent.NumberOfWeeks;
+                Global.StartDate = Convert.ToDateTime(tblStudent.StartDate);
+                Global.StudentNumber = Convert.ToInt32(tblStudent.NumberOfWeeks);
 
                 await _context.SaveChangesAsync();
                 // maybe include a message to say details have successfully been updated
@@ -175,8 +175,8 @@ namespace PlannerLibrary.Controllers
                         if (filtStudentDetails != null && verify == true)
                         {
                             Global.StudentNumber = login.StudentNumber;
-                            Global.StartDate = await db.TblStudents.Where(x=> x.StudentNumber == Global.StudentNumber).Select(x=> x.StartDate).FirstAsync();
-                            Global.NoOfWeeks = await db.TblStudents.Where(x=> x.StudentNumber == Global.StudentNumber).Select(x=> x.NumberOfWeeks).FirstAsync();
+                            Global.StartDate =  Convert.ToDateTime(db.TblStudents.Where(x=> x.StudentNumber == Global.StudentNumber).Select(x=> x.StartDate).FirstAsync());
+                            Global.NoOfWeeks = Convert.ToInt32(db.TblStudents.Where(x=> x.StudentNumber == Global.StudentNumber).Select(x=> x.NumberOfWeeks).FirstAsync());
 
                             return RedirectToAction("SemesterDetails", "TblStudents");
                         }
