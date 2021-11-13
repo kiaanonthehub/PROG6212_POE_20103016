@@ -11,7 +11,7 @@ namespace PlannerWebApp.Controllers
     public class TblStudentsController : Controller
     {
         private readonly PlannerContext _context;
-
+        PlannerContext db = new PlannerContext();
         public TblStudentsController(PlannerContext context)
         {
             _context = context;
@@ -41,7 +41,7 @@ namespace PlannerWebApp.Controllers
             return View(tblStudent);
         }
 
-        // GET: TblStudents/SemesterDetails
+        // GET: TblStudents/OTPVerification
         public IActionResult OTPVerification()
         {
             return View();
@@ -79,13 +79,16 @@ namespace PlannerWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                TblStudent tblStudent = new TblStudent();
+                TblStudent tblStudent = _context.TblStudents.FirstOrDefault(x => x.StudentNumber == Global.StudentNumber);
                 tblStudent.StartDate = semester.StartDate;
                 tblStudent.NumberOfWeeks = semester.NumberOfWeeks;
 
-                _context.Add(tblStudent);
+                Global.StartDate = tblStudent.StartDate;
+                Global.StudentNumber = tblStudent.NumberOfWeeks;
+
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                // maybe include a message to say details have successfully been updated
+                return RedirectToAction("Index", "TblModules");
             }
             return View(semester);
         }
@@ -110,6 +113,7 @@ namespace PlannerWebApp.Controllers
                     tblStudent.StudentSurname = student.StudentSurname;
                     tblStudent.StudentEmail = student.StudentEmail;
                     tblStudent.StudentHashPassword = BCrypt.Net.BCrypt.HashPassword(student.StudentHashPassword);
+                    tblStudent.StartDate = DateTime.em;
 
                     Global.StudentNumber = student.StudentNumber;
 
@@ -136,7 +140,7 @@ namespace PlannerWebApp.Controllers
             return View();
         }
 
-        PlannerContext db = new PlannerContext();
+       
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -170,6 +174,10 @@ namespace PlannerWebApp.Controllers
                         // conditional statement
                         if (filtStudentDetails != null && verify == true)
                         {
+                            Global.StudentNumber = login.StudentNumber;
+                            Global.StartDate = await db.TblStudents.Where(x=> x.StudentNumber == Global.StudentNumber).Select(x=> x.StartDate).FirstAsync();
+                            Global.NoOfWeeks = await db.TblStudents.Where(x=> x.StudentNumber == Global.StudentNumber).Select(x=> x.NumberOfWeeks).FirstAsync();
+
                             return RedirectToAction("SemesterDetails", "TblStudents");
                         }
                         else
@@ -270,3 +278,11 @@ namespace PlannerWebApp.Controllers
         }
     }
 }
+
+/*
+ * Code Attribution
+ *  Topic : How to update record using Entity Framework Core?
+ *  Author : H. Herzl
+ *  Link awavilable at : https://stackoverflow.com/questions/46657813/how-to-update-record-using-entity-framework-coreanswered [Oct 10 '17 at 4:48]
+ *  Code implemented : SemesterDetails [HttpPost] action
+ */
