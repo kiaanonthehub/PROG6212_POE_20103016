@@ -6,7 +6,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PlannerWebApp.Controllers
+namespace PlannerLibrary.Controllers
 {
     public class TblStudentsController : Controller
     {
@@ -113,7 +113,7 @@ namespace PlannerWebApp.Controllers
                     tblStudent.StudentSurname = student.StudentSurname;
                     tblStudent.StudentEmail = student.StudentEmail;
                     tblStudent.StudentHashPassword = BCrypt.Net.BCrypt.HashPassword(student.StudentHashPassword);
-                    tblStudent.StartDate = DateTime.em;
+                    
 
                     Global.StudentNumber = student.StudentNumber;
 

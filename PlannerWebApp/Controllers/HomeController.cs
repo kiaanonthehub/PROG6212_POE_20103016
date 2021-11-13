@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using PlannerWebApp.Models;
+using PlannerLibrary.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PlannerWebApp.Controllers
+namespace PlannerLibrary.Controllers
 {
     public class HomeController : Controller
     {

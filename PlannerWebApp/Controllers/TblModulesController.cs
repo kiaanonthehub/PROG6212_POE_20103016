@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PlannerLibrary.DbModels;
 
-namespace PlannerWebApp.Controllers
+namespace PlannerLibrary.Controllers
 {
     public class TblModulesController : Controller
     {
