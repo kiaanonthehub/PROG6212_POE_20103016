@@ -104,7 +104,7 @@ namespace PlannerLibrary.Controllers
 
                 await _context.SaveChangesAsync();
                 // maybe include a message to say details have successfully been updated
-                return RedirectToAction("Index", "TblModules");
+                return RedirectToAction("AddModule", "TblModules");
             }
             return View(semester);
         }
@@ -134,7 +134,6 @@ namespace PlannerLibrary.Controllers
                     // conditional statement - check if filtered list contains any elements
                     if (filteredStudent.Count == 0)
                     {
-
                         TblStudent tblStudent = new TblStudent();
                         tblStudent.StudentNumber = student.StudentNumber;
                         tblStudent.StudentName = student.StudentName;
@@ -154,7 +153,7 @@ namespace PlannerLibrary.Controllers
                                     TempData["OTPMessage"]  = "A One Time Passcode (OTP) has been sent to "+student.StudentEmail+"."
                                                           + "\nPlease enter the OTP below to verify your Email Address."
                                                           + "\nIf you cannot locate the mail in your Inbox, please check"
-                                                          + "your Spam folder";
+                                                          + "\n your Spam folder";
                                 }
                                 else
                                 {

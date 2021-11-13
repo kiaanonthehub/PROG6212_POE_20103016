@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace PlannerLibrary.DbModels
+namespace PlannerWebApp.DbModels
 {
     public partial class PlannerContext : DbContext
     {
@@ -26,7 +26,7 @@ namespace PlannerLibrary.DbModels
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=kiaan;Database=Planner;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=KIAAN;Database=Planner;Trusted_Connection=True;");
             }
         }
 
@@ -111,10 +111,6 @@ namespace PlannerLibrary.DbModels
                     .HasMaxLength(8)
                     .IsUnicode(false)
                     .HasColumnName("module_id");
-
-                entity.Property(e => e.ModuleIncompleteHours)
-                    .HasColumnType("decimal(5, 2)")
-                    .HasColumnName("module_incomplete_hours");
 
                 entity.Property(e => e.ModuleSelfStudyHour)
                     .HasColumnType("decimal(5, 2)")
