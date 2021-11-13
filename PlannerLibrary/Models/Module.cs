@@ -1,5 +1,6 @@
 ﻿using PlannerLibrary.DbModels;
 using System;
+using System.Threading.Tasks;
 
 namespace PlannerLibrary.Models
 {
@@ -10,6 +11,7 @@ namespace PlannerLibrary.Models
         public string ModuleName { get; set; }
         public int ModuleCredits { get; set; }
         public int ModuleClassHours { get; set; }
+        public decimal? ModuleSelfStudyHour { get; set; }
 
         public double SelfStudyHours()
         {
@@ -22,6 +24,36 @@ namespace PlannerLibrary.Models
                 return (ModuleCredits * 10 / Convert.ToInt32(Global.NoOfWeeks)) - ModuleClassHours;
             }
         }
+
+        public async Task<bool> IsModuleAdded()
+        {
+            TblModule tblModule = new TblModule();
+            tblModule.ModuleId = ModuleId;
+            tblModule.ModuleName = ModuleName;
+            tblModule.ModuleCredits = (int)ModuleCredits;
+            tblModule.ModuleClassHours = (int)ModuleClassHours;
+            //tblModule.ModuleSelfStudyHour = (decimal)selfStudyHours;
+
+            await Task.Run(() => db.AddAsync(tblModule));
+            await Task.Run(() => db.SaveChangesAsync());
+
+            return true;
+        }
+
+
+        public async Task<bool> IsStudentModuleAdded()
+        {
+            TblStudentModule tblStudentModule = new TblStudentModule();
+            tblStudentModule.StudentNumber = Global.StudentNumber;
+            tblStudentModule.ModuleId = ModuleId;
+            tblStudentModule.ModuleSelfStudyHour = Convert.ToDecimal(SelfStudyHours());
+
+            await Task.Run(() => db.AddAsync(tblStudentModule));
+            await Task.Run(() => db.SaveChangesAsync());
+
+            return true;
+        }
+
 
     }
 }

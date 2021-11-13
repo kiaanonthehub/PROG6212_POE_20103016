@@ -6,12 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PlannerLibrary.DbModels;
+using PlannerLibrary.Models;
 
 namespace PlannerLibrary.Controllers
 {
     public class TblModulesController : Controller
     {
         private readonly PlannerContext _context;
+        PlannerContext db = new PlannerContext();
 
         public TblModulesController(PlannerContext context)
         {
@@ -43,25 +45,47 @@ namespace PlannerLibrary.Controllers
         }
 
         // GET: TblModules/Create
-        public IActionResult Create()
+        public IActionResult AddModule()
         {
             return View();
         }
 
-        // POST: TblModules/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ModuleId,ModuleName,ModuleCredits,ModuleClassHours")] TblModule tblModule)
+        public async Task<IActionResult> AddModule([Bind("ModuleId,ModuleName,ModuleCredits,ModuleClassHours")] Module module)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(tblModule);
-                await _context.SaveChangesAsync();
+                // check if module exists in the database for module table
+                TblModule filtModule = await Task.Run(() => 
+                                        db.TblModules
+                                       .Where(x => x.ModuleId == module.ModuleId || x.ModuleName == module.ModuleName)
+                                       .FirstOrDefault());
+
+                // check if module exists in the database for student_module table
+                TblStudentModule filtStudentModule = await Task.Run(() => 
+                                                     db.TblStudentModules
+                                                     .Where(x => x.ModuleId == module.ModuleId && x.StudentNumber == Global.StudentNumber)
+                                                     .FirstOrDefault());
+                
+                if (filtModule == null)
+                {
+                    await module.IsModuleAdded();
+                }
+
+                if (filtStudentModule == null)
+                {
+                    await module.IsStudentModuleAdded();
+                    ViewBag.ModuleMessage = module.ModuleId + " has been added successfully.";
+                }
+                else
+                {
+                    ViewBag.ModuleMessage = module.ModuleId+" already exits. Please add a new module.";
+                }
+
                 return RedirectToAction(nameof(Index));
             }
-            return View(tblModule);
+            return View(module);
         }
 
         // GET: TblModules/Edit/5
@@ -80,9 +104,6 @@ namespace PlannerLibrary.Controllers
             return View(tblModule);
         }
 
-        // POST: TblModules/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("ModuleId,ModuleName,ModuleCredits,ModuleClassHours")] TblModule tblModule)
