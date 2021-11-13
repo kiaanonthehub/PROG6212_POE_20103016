@@ -150,7 +150,7 @@ namespace PlannerLibrary.Controllers
                             {
                                 if (MailMe.SendMail(student.StudentEmail))
                                 {
-                                    TempData["OTPMessage"]  = "A One Time Passcode (OTP) has been sent to "+student.StudentEmail+"."
+                                    TempData["OTPMessage"] = "A One Time Passcode (OTP) has been sent to " + student.StudentEmail + "."
                                                           + "\nPlease enter the OTP below to verify your Email Address."
                                                           + "\nIf you cannot locate the mail in your Inbox, please check"
                                                           + "\n your Spam folder";

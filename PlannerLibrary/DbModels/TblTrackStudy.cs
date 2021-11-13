@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace PlannerWebApp.DbModels
+namespace PlannerLibrary.DbModels
 {
     public partial class TblTrackStudy
     {

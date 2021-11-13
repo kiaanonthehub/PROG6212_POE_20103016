@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using PlannerLibrary.Models;
+using PlannerLibrary.DbModels;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using PlannerLibrary.DbModels;
-using PlannerLibrary.Models;
 
 namespace PlannerLibrary.Controllers
 {
@@ -34,7 +31,7 @@ namespace PlannerLibrary.Controllers
                 return NotFound();
             }
 
-            var tblModule = await _context.TblModules
+            TblModule tblModule = await _context.TblModules
                 .FirstOrDefaultAsync(m => m.ModuleId == id);
             if (tblModule == null)
             {
@@ -57,17 +54,17 @@ namespace PlannerLibrary.Controllers
             if (ModelState.IsValid)
             {
                 // check if module exists in the database for module table
-                TblModule filtModule = await Task.Run(() => 
+                TblModule filtModule = await Task.Run(() =>
                                         db.TblModules
                                        .Where(x => x.ModuleId == module.ModuleId || x.ModuleName == module.ModuleName)
                                        .FirstOrDefault());
 
                 // check if module exists in the database for student_module table
-                TblStudentModule filtStudentModule = await Task.Run(() => 
+                TblStudentModule filtStudentModule = await Task.Run(() =>
                                                      db.TblStudentModules
                                                      .Where(x => x.ModuleId == module.ModuleId && x.StudentNumber == Global.StudentNumber)
                                                      .FirstOrDefault());
-                
+
                 if (filtModule == null)
                 {
                     await module.IsModuleAdded();
@@ -80,7 +77,7 @@ namespace PlannerLibrary.Controllers
                 }
                 else
                 {
-                    ViewBag.ModuleMessage = module.ModuleId+" already exits. Please add a new module.";
+                    ViewBag.ModuleMessage = module.ModuleId + " already exits. Please add a new module.";
                 }
 
                 return RedirectToAction(nameof(Index));
@@ -96,7 +93,7 @@ namespace PlannerLibrary.Controllers
                 return NotFound();
             }
 
-            var tblModule = await _context.TblModules.FindAsync(id);
+            TblModule tblModule = await _context.TblModules.FindAsync(id);
             if (tblModule == null)
             {
                 return NotFound();
@@ -144,7 +141,7 @@ namespace PlannerLibrary.Controllers
                 return NotFound();
             }
 
-            var tblModule = await _context.TblModules
+            TblModule tblModule = await _context.TblModules
                 .FirstOrDefaultAsync(m => m.ModuleId == id);
             if (tblModule == null)
             {
@@ -159,7 +156,7 @@ namespace PlannerLibrary.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var tblModule = await _context.TblModules.FindAsync(id);
+            TblModule tblModule = await _context.TblModules.FindAsync(id);
             _context.TblModules.Remove(tblModule);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

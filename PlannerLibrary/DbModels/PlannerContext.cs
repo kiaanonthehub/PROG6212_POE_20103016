@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace PlannerWebApp.DbModels
+namespace PlannerLibrary.DbModels
 {
     public partial class PlannerContext : DbContext
     {
