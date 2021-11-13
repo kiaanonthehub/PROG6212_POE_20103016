@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PlannerLibrary.DbModels;
 using PlannerLibrary.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -44,19 +45,34 @@ namespace PlannerLibrary.Controllers
         // GET: TblStudents/OTPVerification
         public IActionResult OTPVerification()
         {
+            ViewBag.OTPMessage = TempData["OTPMessage"];
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult OTPVerification([Bind("OneTimePin")] Verification verification)
+        public async Task<IActionResult> OTPVerification([Bind("OneTimePin")] Verification verification)
         {
             if (ModelState.IsValid)
             {
-
                 if (verification.OneTimePin == Global.OneTimePin)
                 {
-                    return RedirectToAction("SemesterDetails", "TblStudents");
+                    DateTime? filtDate = await db.TblStudents
+                        .Where(x => x.StudentNumber == Global.StudentNumber)
+                        .Select(x => x.StartDate).FirstOrDefaultAsync();
+
+                    int? filtWeeks = await db.TblStudents
+                        .Where(x => x.StudentNumber == Global.StudentNumber)
+                        .Select(x => x.NumberOfWeeks).FirstOrDefaultAsync();
+
+                    if (filtDate == null || filtWeeks == null)
+                    {
+                        return RedirectToAction("SemesterDetails", "TblStudents");
+                    }
+                    else
+                    {
+                        RedirectToAction("Index", "TblModules");
+                    }
                 }
                 else
                 {
@@ -83,8 +99,8 @@ namespace PlannerLibrary.Controllers
                 tblStudent.StartDate = semester.StartDate;
                 tblStudent.NumberOfWeeks = semester.NumberOfWeeks;
 
-                Global.StartDate = Convert.ToDateTime(tblStudent.StartDate);
-                Global.StudentNumber = Convert.ToInt32(tblStudent.NumberOfWeeks);
+                Global.StartDate = tblStudent.StartDate;
+                Global.NoOfWeeks = tblStudent.NumberOfWeeks;
 
                 await _context.SaveChangesAsync();
                 // maybe include a message to say details have successfully been updated
@@ -107,19 +123,58 @@ namespace PlannerLibrary.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    TblStudent tblStudent = new TblStudent();
-                    tblStudent.StudentNumber = student.StudentNumber;
-                    tblStudent.StudentName = student.StudentName;
-                    tblStudent.StudentSurname = student.StudentSurname;
-                    tblStudent.StudentEmail = student.StudentEmail;
-                    tblStudent.StudentHashPassword = BCrypt.Net.BCrypt.HashPassword(student.StudentHashPassword);
-                    
 
-                    Global.StudentNumber = student.StudentNumber;
+                    // query database to check for existing data 
+                    List<TblStudent> filteredStudent = await Task.Run(() => db.TblStudents.
+                            Where(x => (
+                            x.StudentName == student.StudentName && x.StudentSurname == student.StudentSurname) ||
+                            x.StudentEmail == student.StudentEmail ||
+                            x.StudentNumber == student.StudentNumber).ToListAsync());
 
-                    _context.Add(tblStudent);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction("OTPVerification", "TblStudents");
+                    // conditional statement - check if filtered list contains any elements
+                    if (filteredStudent.Count == 0)
+                    {
+
+                        TblStudent tblStudent = new TblStudent();
+                        tblStudent.StudentNumber = student.StudentNumber;
+                        tblStudent.StudentName = student.StudentName;
+                        tblStudent.StudentSurname = student.StudentSurname;
+
+                        if (MailMe.IsValidEmail(student.StudentEmail))
+                        {
+                            tblStudent.StudentEmail = student.StudentEmail;
+                            tblStudent.StudentHashPassword = BCrypt.Net.BCrypt.HashPassword(student.StudentHashPassword);
+
+                            Global.StudentNumber = student.StudentNumber;
+
+                            if (Verification.GenerateOTP())
+                            {
+                                if (MailMe.SendMail(student.StudentEmail))
+                                {
+                                    TempData["OTPMessage"]  = "A One Time Passcode (OTP) has been sent to "+student.StudentEmail+"."
+                                                          + "\nPlease enter the OTP below to verify your Email Address."
+                                                          + "\nIf you cannot locate the mail in your Inbox, please check"
+                                                          + "your Spam folder";
+                                }
+                                else
+                                {
+                                    TempData["OTPMessage"] = "An error has occured. We apologise for the inconvience.";
+                                }
+                            }
+
+                            _context.Add(tblStudent);
+                            await _context.SaveChangesAsync();
+                            return RedirectToAction("OTPVerification", "TblStudents");
+                        }
+                        else
+                        {
+                            ViewBag.InvalidEmail = "Please enter a valid email address.";
+                        }
+                    }
+                    else
+                    {
+                        ViewBag.UserExits = "This user already exits. Please check your details and try again or login below.";
+                    }
                 }
             }
             catch (DbUpdateException)
@@ -139,8 +194,6 @@ namespace PlannerLibrary.Controllers
         {
             return View();
         }
-
-       
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -175,8 +228,8 @@ namespace PlannerLibrary.Controllers
                         if (filtStudentDetails != null && verify == true)
                         {
                             Global.StudentNumber = login.StudentNumber;
-                            Global.StartDate =  Convert.ToDateTime(db.TblStudents.Where(x=> x.StudentNumber == Global.StudentNumber).Select(x=> x.StartDate).FirstAsync());
-                            Global.NoOfWeeks = Convert.ToInt32(db.TblStudents.Where(x=> x.StudentNumber == Global.StudentNumber).Select(x=> x.NumberOfWeeks).FirstAsync());
+                            Global.StartDate = await db.TblStudents.Where(x => x.StudentNumber == Global.StudentNumber).Select(x => x.StartDate).FirstOrDefaultAsync();
+                            Global.NoOfWeeks = await db.TblStudents.Where(x => x.StudentNumber == Global.StudentNumber).Select(x => x.NumberOfWeeks).FirstOrDefaultAsync();
 
                             return RedirectToAction("SemesterDetails", "TblStudents");
                         }

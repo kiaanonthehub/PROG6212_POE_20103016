@@ -1,4 +1,5 @@
 ﻿using PlannerLibrary.DbModels;
+using System;
 
 namespace PlannerLibrary.Models
 {
@@ -18,7 +19,7 @@ namespace PlannerLibrary.Models
             }
             else
             {
-                return (ModuleCredits * 10 / Global.NoOfWeeks) - ModuleClassHours;
+                return (ModuleCredits * 10 / Convert.ToInt32(Global.NoOfWeeks)) - ModuleClassHours;
             }
         }
 
