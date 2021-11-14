@@ -5,6 +5,16 @@
 }
 
 <h1>Add Module</h1>
+
+    <p class="alert-info">
+        @ViewBag.ModuleMessage
+    </p>
+    <p class="alert-danger">  
+        @ViewBag.ErrorModuleMessage
+    </p>
+
+
+
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -31,7 +41,7 @@
                 <span asp-validation-for="ModuleClassHours" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" onclick="onMessageShow()" />
             </div>
         </form>
     </div>
@@ -44,3 +54,51 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+
+<script type="text/javascript">
+function onMessageShow() {
+    var msg = "@ViewBag.ModuleMessage";
+    // if the message exists, set redirection to dashboard page
+    if (msg != null || typeof msg !== "undefined") {
+         setTimeout('redirect', 5000); // 5 seconds for example
+    }
+}
+
+function redirect() {
+    window.location.href ="/TblModules/AddModule";
+    // or use window.location.replace, depending what your need
+}
+</script>
+
+
+<script>
+    // Using ES6 feature.
+    let redirect_Page = (ele) => {
+
+        ele.value = 'Redirecting in 5 secs ...';
+        ele.disabled = true;
+
+        let tID = setTimeout(function () {
+
+            // redirect page.
+            window.location.href = 'TblModules/AddModule';
+
+            window.clearTimeout(tID);		// clear time out.
+
+        }, 5000);	// call function after 5000 milliseconds or 5 seconds
+    }
+
+    // Using regular methods.
+
+//     function redirect_Page (ele) {
+
+// 		ele.value = 'Redirecting in 5 secs ...';
+//       	ele.disabled = true;
+
+//         var tID = setTimeout(function () {
+//             window.location.href = 'https://www.encodedna.com/javascript/operators/default.htm';
+//             window.clearTimeout(tID);		// clear time out.
+//         }, 5000);
+//     }
+</script>

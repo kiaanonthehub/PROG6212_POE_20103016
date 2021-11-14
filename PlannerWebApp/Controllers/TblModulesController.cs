@@ -77,10 +77,9 @@ namespace PlannerLibrary.Controllers
                 }
                 else
                 {
-                    ViewBag.ModuleMessage = module.ModuleId + " already exits. Please add a new module.";
+                    ViewBag.ErrorModuleMessage = module.ModuleId + " already exits. Please add a new module.";
                 }
 
-                return RedirectToAction(nameof(Index));
             }
             return View(module);
         }

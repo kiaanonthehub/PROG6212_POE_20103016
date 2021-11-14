@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -18,6 +19,9 @@ namespace PlannerLibrary.DbModels
         public string StudentSurname { get; set; }
         public string StudentEmail { get; set; }
         public string StudentHashPassword { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? StartDate { get; set; }
         public int? NumberOfWeeks { get; set; }
 

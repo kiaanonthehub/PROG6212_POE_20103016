@@ -27,6 +27,7 @@ namespace PlannerLibrary.DbModels
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseSqlServer("Server=KIAAN;Database=Planner;Trusted_Connection=True;");
+               // optionsBuilder.UseSqlServer("DefaultConnection");
             }
         }
 

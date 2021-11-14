@@ -85,8 +85,10 @@ namespace PlannerLibrary.Controllers
 
         // GET: TblStudents/OTP
         public IActionResult SemesterDetails()
-        {
-            return View();
+        {           
+            return View( new TblStudent 
+            { StartDate = Global.StartDate }
+            );
         }
 
         [HttpPost]

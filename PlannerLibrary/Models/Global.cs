@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
 namespace PlannerLibrary.Models
@@ -6,7 +7,11 @@ namespace PlannerLibrary.Models
     public static class Global
     {
         public static int StudentNumber;
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
         public static DateTime? StartDate;
+
         public static int? NoOfWeeks;
         public static int OneTimePin;
 
