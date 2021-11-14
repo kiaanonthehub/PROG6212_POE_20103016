@@ -122,6 +122,11 @@ namespace PlannerLibrary.DbModels
                     .HasColumnType("decimal(5, 2)")
                     .HasColumnName("study_hours_remains");
 
+                entity.Property(e => e.StudyReminderDay)
+                    .HasMaxLength(25)
+                    .IsUnicode(false)
+                    .HasColumnName("study_reminder_day");
+
                 entity.HasOne(d => d.Module)
                     .WithMany(p => p.TblStudentModules)
                     .HasForeignKey(d => d.ModuleId)

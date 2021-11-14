@@ -12,6 +12,7 @@ namespace PlannerLibrary.DbModels
         public string ModuleId { get; set; }
         public decimal? ModuleSelfStudyHour { get; set; }
         public decimal? StudyHoursRemains { get; set; }
+        public string StudyReminderDay { get; set; }
 
         public virtual TblModule Module { get; set; }
         public virtual TblStudent StudentNumberNavigation { get; set; }
