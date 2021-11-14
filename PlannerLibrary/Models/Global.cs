@@ -11,8 +11,10 @@ namespace PlannerLibrary.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
         public static DateTime? StartDate;
+        public static string HoursRemains;
 
         public static int? NoOfWeeks;
+        public static int currentWeekNo;
         public static int OneTimePin;
 
         //public enum PasswordScore

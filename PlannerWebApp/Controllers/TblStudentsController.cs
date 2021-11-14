@@ -100,7 +100,7 @@ namespace PlannerLibrary.Controllers
                 TblStudent tblStudent = _context.TblStudents.FirstOrDefault(x => x.StudentNumber == Global.StudentNumber);
                 tblStudent.StartDate = semester.StartDate;
                 tblStudent.NumberOfWeeks = semester.NumberOfWeeks;
-
+                Global.currentWeekNo = Util.GetCurrentWeek(DateTime.Now);
                 Global.StartDate = tblStudent.StartDate;
                 Global.NoOfWeeks = tblStudent.NumberOfWeeks;
 
@@ -232,7 +232,7 @@ namespace PlannerLibrary.Controllers
                             Global.StartDate = await db.TblStudents.Where(x => x.StudentNumber == Global.StudentNumber).Select(x => x.StartDate).FirstOrDefaultAsync();
                             Global.NoOfWeeks = await db.TblStudents.Where(x => x.StudentNumber == Global.StudentNumber).Select(x => x.NumberOfWeeks).FirstOrDefaultAsync();
 
-                            return RedirectToAction("SemesterDetails", "TblStudents");
+                            return RedirectToAction("AddModule", "TblModules");
                         }
                         else
                         {

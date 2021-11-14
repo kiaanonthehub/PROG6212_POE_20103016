@@ -5,13 +5,6 @@ namespace PlannerLibrary.Models
 
     public static class Util
     {
-        public static int studentNumber;
-        public static DateTime startDate;
-        public static int noOfWeeks;
-        public static int currentWeekNo;
-        public static string userEmail;
-        public static int OTPPin;
-
         /// <summary>
         /// method to get the current week dependent on the start date
         /// </summary>
@@ -19,7 +12,7 @@ namespace PlannerLibrary.Models
         /// <returns></returns>
         public static int GetCurrentWeek(DateTime date)
         {
-            return (date - startDate).Days / 7 + 1;
+            return (date - Convert.ToDateTime(Global.StartDate)).Days / 7 + 1;
         }
 
         public static DateTime LastDayOfWeek(DateTime dt)
@@ -40,7 +33,7 @@ namespace PlannerLibrary.Models
             int hh = timeSpan.Hours;
             int mm = timeSpan.Minutes;
 
-            return string.Format("{0} remaining self-study hours : " +
+            return string.Format("{0} Remaining Self-Study Hours : " +
                 "\n {1} hours, {2} minutes", module, hh, mm);
         }
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PlannerLibrary.DbModels;
 using PlannerLibrary.Models;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -48,31 +49,34 @@ namespace PlannerWebApp.Controllers
         public IActionResult TrackStudies()
         {
             ViewData["ModuleId"] = new SelectList(_context.TblModules, "ModuleId", "ModuleId");
-            ViewData["StudentNumber"] = new SelectList(_context.TblStudents, "StudentNumber", "StudentEmail");
             return View();
         }
 
+        // POST: TblTrackStudies/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> TrackStudies([Bind("HoursWorked,DateWorked,StudentNumber")] TrackStudy study)
+        public async Task<IActionResult> TrackStudies([Bind("HoursWorked,DateWorked,ModuleId")] TrackStudy tracker)
         {
+            TblTrackStudy tblTrackStudy = new TblTrackStudy();
             if (ModelState.IsValid)
             {
-                TblTrackStudy tblTrackStudy = new TblTrackStudy();
-
-                string RemainingHours = study.IsStudyHoursTracked(study.ModuleID);
-
-                tblTrackStudy.ModuleId = study.ModuleID;
-                tblTrackStudy.DateWorked = study.DateWorked;
+                tblTrackStudy.HoursWorked = tracker.HoursWorked;
+                tblTrackStudy.DateWorked = Convert.ToDateTime(tracker.DateWorked);
+                tblTrackStudy.WeekNumber = Util.GetCurrentWeek(Convert.ToDateTime(tracker.DateWorked));
                 tblTrackStudy.StudentNumber = Global.StudentNumber;
-
-                ViewBag.RemHours = RemainingHours;
+                tblTrackStudy.ModuleId = tracker.ModuleId;
 
                 _context.Add(tblTrackStudy);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                ViewBag.RemHours =  tracker.IsStudyHoursTracked(tracker.ModuleId);
+
+                return RedirectToAction(nameof(TrackStudies));
             }
-            return View(study);
+            ViewData["ModuleId"] = new SelectList(_context.TblModules, "ModuleId", "ModuleId", tblTrackStudy.ModuleId);
+            return View(tracker);
         }
 
         // GET: TblTrackStudies/Edit/5
@@ -93,6 +97,9 @@ namespace PlannerWebApp.Controllers
             return View(tblTrackStudy);
         }
 
+        // POST: TblTrackStudies/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("TrackStudiesId,HoursWorked,DateWorked,WeekNumber,StudentNumber,ModuleId")] TblTrackStudy tblTrackStudy)
