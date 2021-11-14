@@ -27,7 +27,6 @@ namespace PlannerLibrary.DbModels
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseSqlServer("Server=KIAAN;Database=Planner;Trusted_Connection=True;");
-               // optionsBuilder.UseSqlServer("DefaultConnection");
             }
         }
 
@@ -118,6 +117,10 @@ namespace PlannerLibrary.DbModels
                     .HasColumnName("module_self_study_hour");
 
                 entity.Property(e => e.StudentNumber).HasColumnName("student_number");
+
+                entity.Property(e => e.StudyHoursRemains)
+                    .HasColumnType("decimal(5, 2)")
+                    .HasColumnName("study_hours_remains");
 
                 entity.HasOne(d => d.Module)
                     .WithMany(p => p.TblStudentModules)
