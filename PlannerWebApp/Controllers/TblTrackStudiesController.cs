@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PlannerLibrary.DbModels;
+using PlannerLibrary.Models;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PlannerWebApp.Controllers
 {
@@ -21,7 +20,7 @@ namespace PlannerWebApp.Controllers
         // GET: TblTrackStudies
         public async Task<IActionResult> Index()
         {
-            var plannerContext = _context.TblTrackStudies.Include(t => t.Module).Include(t => t.StudentNumberNavigation);
+            Microsoft.EntityFrameworkCore.Query.IIncludableQueryable<TblTrackStudy, TblStudent> plannerContext = _context.TblTrackStudies.Include(t => t.Module).Include(t => t.StudentNumberNavigation);
             return View(await plannerContext.ToListAsync());
         }
 
@@ -33,7 +32,7 @@ namespace PlannerWebApp.Controllers
                 return NotFound();
             }
 
-            var tblTrackStudy = await _context.TblTrackStudies
+            TblTrackStudy tblTrackStudy = await _context.TblTrackStudies
                 .Include(t => t.Module)
                 .Include(t => t.StudentNumberNavigation)
                 .FirstOrDefaultAsync(m => m.TrackStudiesId == id);
@@ -46,7 +45,7 @@ namespace PlannerWebApp.Controllers
         }
 
         // GET: TblTrackStudies/Create
-        public IActionResult Create()
+        public IActionResult TrackStudies()
         {
             ViewData["ModuleId"] = new SelectList(_context.TblModules, "ModuleId", "ModuleId");
             ViewData["StudentNumber"] = new SelectList(_context.TblStudents, "StudentNumber", "StudentEmail");
@@ -55,17 +54,25 @@ namespace PlannerWebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TrackStudiesId,HoursWorked,DateWorked,WeekNumber,StudentNumber,ModuleId")] TblTrackStudy tblTrackStudy)
+        public async Task<IActionResult> TrackStudies([Bind("HoursWorked,DateWorked,StudentNumber")] TrackStudy study)
         {
             if (ModelState.IsValid)
             {
+                TblTrackStudy tblTrackStudy = new TblTrackStudy();
+
+                string RemainingHours = study.IsStudyHoursTracked(study.ModuleID);
+
+                tblTrackStudy.ModuleId = study.ModuleID;
+                tblTrackStudy.DateWorked = study.DateWorked;
+                tblTrackStudy.StudentNumber = Global.StudentNumber;
+
+                ViewBag.RemHours = RemainingHours;
+
                 _context.Add(tblTrackStudy);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ModuleId"] = new SelectList(_context.TblModules, "ModuleId", "ModuleId", tblTrackStudy.ModuleId);
-            ViewData["StudentNumber"] = new SelectList(_context.TblStudents, "StudentNumber", "StudentEmail", tblTrackStudy.StudentNumber);
-            return View(tblTrackStudy);
+            return View(study);
         }
 
         // GET: TblTrackStudies/Edit/5
@@ -76,7 +83,7 @@ namespace PlannerWebApp.Controllers
                 return NotFound();
             }
 
-            var tblTrackStudy = await _context.TblTrackStudies.FindAsync(id);
+            TblTrackStudy tblTrackStudy = await _context.TblTrackStudies.FindAsync(id);
             if (tblTrackStudy == null)
             {
                 return NotFound();
@@ -128,7 +135,7 @@ namespace PlannerWebApp.Controllers
                 return NotFound();
             }
 
-            var tblTrackStudy = await _context.TblTrackStudies
+            TblTrackStudy tblTrackStudy = await _context.TblTrackStudies
                 .Include(t => t.Module)
                 .Include(t => t.StudentNumberNavigation)
                 .FirstOrDefaultAsync(m => m.TrackStudiesId == id);
@@ -145,7 +152,7 @@ namespace PlannerWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var tblTrackStudy = await _context.TblTrackStudies.FindAsync(id);
+            TblTrackStudy tblTrackStudy = await _context.TblTrackStudies.FindAsync(id);
             _context.TblTrackStudies.Remove(tblTrackStudy);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
