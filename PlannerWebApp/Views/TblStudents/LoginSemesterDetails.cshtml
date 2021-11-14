@@ -1,27 +1,29 @@
 ﻿@model PlannerLibrary.DbModels.TblStudent
 
 @{
-    ViewData["Title"] = "SemesterDetails";
+    ViewData["Title"] = "LoginSemesterDetails";
 }
 
-<h1>SemesterDetails</h1>
+<h1>LoginSemesterDetails</h1>
 
 <h4>TblStudent</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="SemesterDetails">
+        <form asp-action="LoginSemesterDetails">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
             <div class="form-group">
                 <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" class="form-control" id="idDate" asp-format="{0:yyyy-MM-dd}" type="date" value="@Model.StartDate" />
-                <script>document.getElementById('idWeeks').value =@Global.StartDate; </script>
+                @*<script>document.getElementById('idDate').value =@Convert.ToDateTime(Global.StartDate.Value.ToString("d")); </script>*@
+                <input type="text" value="@Global.StartDate.Value.ToString("dd-MMM-yyyy")" class="form-control" readonly/>
                 <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="NumberOfWeeks" class="control-label"></label>
-                <input asp-for="NumberOfWeeks" class="form-control" id="idWeeks" />
-                <script>document.getElementById('idWeeks').value =@Global.NoOfWeeks; </script>
+                <input type="text" value="@Global.NoOfWeeks" class="form-control" readonly />
+                @*<script>document.getElementById('idWeeks').value =@Global.NoOfWeeks; </script>*@
                 <span asp-validation-for="NumberOfWeeks" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -34,6 +36,7 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

@@ -111,6 +111,14 @@ namespace PlannerLibrary.Controllers
             return View(semester);
         }
 
+        public async Task<IActionResult> LoginSemesterDetailsAsync()
+        {
+            Global.StartDate =  await db.TblStudents.Where(x => x.StudentNumber == Global.StudentNumber).Select(x => x.StartDate).FirstOrDefaultAsync();
+            Global.NoOfWeeks =  await db.TblStudents.Where(x => x.StudentNumber == Global.StudentNumber).Select(x => x.NumberOfWeeks).FirstOrDefaultAsync();
+            return View();
+        }
+
+
         // GET: Users/Signup
         public IActionResult Signup()
         {
@@ -232,7 +240,7 @@ namespace PlannerLibrary.Controllers
                             Global.StartDate = await db.TblStudents.Where(x => x.StudentNumber == Global.StudentNumber).Select(x => x.StartDate).FirstOrDefaultAsync();
                             Global.NoOfWeeks = await db.TblStudents.Where(x => x.StudentNumber == Global.StudentNumber).Select(x => x.NumberOfWeeks).FirstOrDefaultAsync();
 
-                            return RedirectToAction("AddModule", "TblModules");
+                            return RedirectToAction("LoginSemesterDetails", "TblStudents");
                         }
                         else
                         {

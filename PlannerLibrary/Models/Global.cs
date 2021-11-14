@@ -12,6 +12,7 @@ namespace PlannerLibrary.Models
         [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
         public static DateTime? StartDate;
         public static string HoursRemains;
+        public static string DisplayRemHours;
 
         public static int? NoOfWeeks;
         public static int currentWeekNo;
