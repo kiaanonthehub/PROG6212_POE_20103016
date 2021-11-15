@@ -63,11 +63,13 @@ namespace PlannerWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                TblStudentModule filtStudentModules = db.TblStudentModules.Where(x => x.StudentNumber == Global.StudentNumber && x.ModuleId == moduleReminder.ModuleId).First();
+                TblStudentModule filtStudentModules = db.TblStudentModules.Where(x => x.StudentNumber == Global.StudentNumber && x.ModuleId == moduleReminder.ModuleId && x.ModuleId == moduleReminder.ModuleId).First();
+
                 filtStudentModules.StudyReminderDay = moduleReminder.StudyReminderDay;
                 db.Update(filtStudentModules);
 
-                await _context.SaveChangesAsync();
+                await db.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["lstDaysOfWeek"] = new SelectList(ModuleReminder.lstDaysOfWeek, "lstDaysOfWeek");

@@ -4,16 +4,16 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Tracked Records</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="TrackStudies">Track new record</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.HoursWorked)
+                @Html.DisplayNameFor(model => model.Module)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.DateWorked)
@@ -22,10 +22,7 @@
                 @Html.DisplayNameFor(model => model.WeekNumber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Module)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StudentNumberNavigation)
+                @Html.DisplayNameFor(model => model.HoursWorked)
             </th>
             <th></th>
         </tr>
@@ -34,7 +31,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.HoursWorked)
+                @Html.DisplayFor(modelItem => item.Module.ModuleId)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DateWorked)
@@ -43,14 +40,9 @@
                 @Html.DisplayFor(modelItem => item.WeekNumber)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Module.ModuleId)
+                @Html.DisplayFor(modelItem => item.HoursWorked)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.StudentNumberNavigation.StudentEmail)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.TrackStudiesId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.TrackStudiesId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.TrackStudiesId">Delete</a>
             </td>
         </tr>

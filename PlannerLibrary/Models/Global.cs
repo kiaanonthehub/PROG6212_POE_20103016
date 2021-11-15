@@ -15,7 +15,7 @@ namespace PlannerLibrary.Models
         public static string DisplayRemHours;
         public static string StudentEmail;
         public static bool IsLoggedIn = false;
-
+        public static bool StudyReminder = false;
         public static int? NoOfWeeks;
         public static int currentWeekNo;
         public static int OneTimePin;

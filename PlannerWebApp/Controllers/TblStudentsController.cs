@@ -266,7 +266,8 @@ namespace PlannerLibrary.Controllers
                             }
                             else
                             {
-                            return RedirectToAction("LoginSemesterDetails", "TblStudents");
+                            //return RedirectToAction("LoginSemesterDetails", "TblStudents");
+                            return RedirectToAction("Index", "Home");
                             }
 
                         }

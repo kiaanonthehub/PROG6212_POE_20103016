@@ -1,17 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using PlannerLibrary.DbModels;
 using PlannerLibrary.Models;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace PlannerLibrary.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        PlannerContext db = new PlannerContext();
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -20,13 +20,27 @@ namespace PlannerLibrary.Controllers
 
         public IActionResult Index()
         {
+
+            string Today = DateTime.Now.DayOfWeek.ToString();
+
+            string StudyReminder = db.TblStudentModules.Where(x => x.StudentNumber == Global.StudentNumber).Select(x => x.StudyReminderDay).First();
+
+            string Module = db.TblStudentModules.Where(x => x.StudentNumber == Global.StudentNumber).Select(x => x.ModuleId).First();
+
+            if (Today == StudyReminder)
+            {
+                Global.StudyReminder = true;
+                ViewBag.StudyReminder = String.Format("Reminder! Study {0} for today {1}", Module, Today);
+                Global.StudyReminder = false;
+            }
+            else
+            {
+                Global.StudyReminder = false;
+            }
+
             return View();
         }
 
-        public IActionResult Error404()
-        {
-            return View();
-        }
 
         public IActionResult Privacy()
         {
