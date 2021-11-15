@@ -29,4 +29,13 @@
     <ProjectReference Include="..\PlannerLibrary\PlannerLibrary.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\img\about.jpg" />
+    <None Include="wwwroot\img\module.jpg" />
+    <None Include="wwwroot\img\privacy.jpg" />
+    <None Include="wwwroot\img\records.jpg" />
+    <None Include="wwwroot\img\reminder.jpeg" />
+    <None Include="wwwroot\img\semester.jpg" />
+  </ItemGroup>
+
 </Project>

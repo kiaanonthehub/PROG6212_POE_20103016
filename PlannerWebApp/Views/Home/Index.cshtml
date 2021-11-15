@@ -2,17 +2,74 @@
     ViewData["Title"] = "Home Page";
 }
 
-
-    @{
-        if (ViewBag.StudyReminder != null)
-        {
-            <div>
-                <script>
+@{
+    if (ViewBag.StudyReminder != null)
+    {
+        <div>
+            <script>
                 alert('@ViewBag.StudyReminder')
-                </script>
-            </div>
-        }
+            </script>
+        </div>
     }
+}
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
+
+    <div class="card-group">
+        <div class="card">
+            <img class="card-img-top" src="~/img/semester.jpg" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Semester</h5>
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                <a href="#">View Semester</a>
+            </div>
+        </div>
+        <div class="card">
+            <img class="card-img-top" src="~/img/module.jpg" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Modules</h5>
+                <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+                <a href="#">View Modules</a>
+            </div>
+        </div>
+        <div class="card">
+            <img class="card-img-top" src="~/img/records.jpg" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Track Records</h5>
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+                <a href="#">View Track Records</a>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="card-group">
+        <div class="card">
+            <img class="card-img-top" src="~/img/reminder.jpeg" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Study Reminder</h5>
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                <a href="#">View Study Reminder</a>
+            </div>
+        </div>
+        <div class="card">
+            <img class="card-img-top" src="~/img/about.jpg" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">About</h5>
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+                <a href="#">View About</a>
+            </div>
+        </div>
+        <div class="card">
+            <img class="card-img-top" src="~/img/privacy.jpg" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Privacy</h5>
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+                <a href="#">View Privacy</a>
+            </div>
+        </div>
+    </div>
 </div>
+
+@{
+    Layout = "HomePage";
+}
