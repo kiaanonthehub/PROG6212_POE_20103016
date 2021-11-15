@@ -1,0 +1,54 @@
+﻿@model PlannerLibrary.DbModels.TblStudentModule
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>TblStudentModule</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="StudentModuleId" />
+            <div class="form-group">
+                <label asp-for="StudentNumber" class="control-label"></label>
+                <select asp-for="StudentNumber" class="form-control" asp-items="ViewBag.StudentNumber"></select>
+                <span asp-validation-for="StudentNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ModuleId" class="control-label"></label>
+                <select asp-for="ModuleId" class="form-control" asp-items="ViewBag.ModuleId"></select>
+                <span asp-validation-for="ModuleId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ModuleSelfStudyHour" class="control-label"></label>
+                <input asp-for="ModuleSelfStudyHour" class="form-control" />
+                <span asp-validation-for="ModuleSelfStudyHour" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StudyHoursRemains" class="control-label"></label>
+                <input asp-for="StudyHoursRemains" class="form-control" />
+                <span asp-validation-for="StudyHoursRemains" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StudyReminderDay" class="control-label"></label>
+                <input asp-for="StudyReminderDay" class="form-control" />
+                <span asp-validation-for="StudyReminderDay" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

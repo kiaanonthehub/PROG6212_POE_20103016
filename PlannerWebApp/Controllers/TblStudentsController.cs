@@ -85,8 +85,8 @@ namespace PlannerLibrary.Controllers
 
         // GET: TblStudents/OTP
         public IActionResult SemesterDetails()
-        {           
-            return View( new TblStudent 
+        {
+            return View(new TblStudent
             { StartDate = Global.StartDate }
             );
         }
@@ -113,11 +113,21 @@ namespace PlannerLibrary.Controllers
 
         public async Task<IActionResult> LoginSemesterDetailsAsync()
         {
-            Global.StartDate =  await db.TblStudents.Where(x => x.StudentNumber == Global.StudentNumber).Select(x => x.StartDate).FirstOrDefaultAsync();
-            Global.NoOfWeeks =  await db.TblStudents.Where(x => x.StudentNumber == Global.StudentNumber).Select(x => x.NumberOfWeeks).FirstOrDefaultAsync();
+            Global.StartDate = await db.TblStudents.Where(x => x.StudentNumber == Global.StudentNumber).Select(x => x.StartDate).FirstOrDefaultAsync();
+            Global.NoOfWeeks = await db.TblStudents.Where(x => x.StudentNumber == Global.StudentNumber).Select(x => x.NumberOfWeeks).FirstOrDefaultAsync();
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult LoginSemesterDetails ([Bind("StartDate,NumberOfWeeks")] Semester semester)
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("AddModule", "TblModules");
+            }
+            return View(semester);
+        }
 
         // GET: Users/Signup
         public IActionResult Signup()
@@ -338,6 +348,56 @@ namespace PlannerLibrary.Controllers
         {
             return _context.TblStudents.Any(e => e.StudentNumber == id);
         }
+
+
+        // GET: TblStudents/Edit/5
+        public async Task<IActionResult> EditLoginSemesterDetails(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            TblStudent tblStudent = await _context.TblStudents.FindAsync(id);
+            if (tblStudent == null)
+            {
+                return NotFound();
+            }
+            return View(tblStudent);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditLoginSemesterDetails(int id, [Bind("StartDate,NumberOfWeeks")] TblStudent tblStudent)
+        {
+            if (id != tblStudent.StudentNumber)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(tblStudent);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!TblStudentExists(tblStudent.StudentNumber))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(tblStudent);
+        }
+
     }
 }
 

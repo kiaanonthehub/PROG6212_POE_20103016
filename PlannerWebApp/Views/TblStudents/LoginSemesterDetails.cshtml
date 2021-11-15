@@ -16,7 +16,7 @@
             <div class="form-group">
                 <label asp-for="StartDate" class="control-label"></label>
                 @*<script>document.getElementById('idDate').value =@Convert.ToDateTime(Global.StartDate.Value.ToString("d")); </script>*@
-                <input type="text" value="@Global.StartDate.Value.ToString("dd-MMM-yyyy")" class="form-control" readonly/>
+                <input type="text" value="@Global.StartDate.Value.ToString("dd-MMM-yyyy")" class="form-control" readonly />
                 <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
 
@@ -27,7 +27,7 @@
                 <span asp-validation-for="NumberOfWeeks" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Confirm" class="btn btn-primary" /> <input type="submit" value="Edit" id="idEdit" class="btn btn-outline-secondary" onclick="location.href = '@Url.Action("EditLoginSemesterDetails", "TblStudes", new { id = Global.StudentNumber })'" />
             </div>
         </form>
     </div>
@@ -40,3 +40,4 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+@*asp-action="EditLoginSemesterDetails" asp-route-id="@Global.StudentNumber*@

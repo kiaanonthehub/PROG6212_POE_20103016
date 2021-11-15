@@ -8,8 +8,12 @@ namespace PlannerLibrary.Models
 {
     public class ModuleReminder
     {
-        public string DayOfWeek { get; set; }
+        public static List<string> lstDaysOfWeek = new List<string>
+        {
+            "Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"
+        };
+
         public string ModuleId { get; set; }
-        public int StudentNumber { get; set; }
+        public string StudyReminderDay { get; set; }
     }
 }
