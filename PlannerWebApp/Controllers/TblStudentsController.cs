@@ -393,7 +393,7 @@ namespace PlannerLibrary.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("AddModule", "TblModules");
             }
             return View(tblStudent);
         }

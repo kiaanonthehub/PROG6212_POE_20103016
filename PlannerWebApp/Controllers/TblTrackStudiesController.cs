@@ -48,7 +48,7 @@ namespace PlannerLibrary.Controllers
         // GET: TblTrackStudies/Create
         public IActionResult TrackStudies()
         {
-            ViewData["ModuleId"] = new SelectList(_context.TblModules, "ModuleId", "ModuleId");
+            ViewData["ModuleId"] = new SelectList(_context.TblStudentModules.Where(x=>x.StudentNumber == Global.StudentNumber), "ModuleId", "ModuleId");
             return View();
         }
 

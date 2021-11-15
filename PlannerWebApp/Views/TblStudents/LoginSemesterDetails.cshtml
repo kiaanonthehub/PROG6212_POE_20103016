@@ -27,7 +27,7 @@
                 <span asp-validation-for="NumberOfWeeks" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Confirm" class="btn btn-primary" /> <input type="submit" value="Edit" id="idEdit" class="btn btn-outline-secondary" onclick="location.href = '@Url.Action("EditLoginSemesterDetails", "TblStudes", new { id = Global.StudentNumber })'" />
+                <input type="submit" value="Confirm" class="btn btn-primary" /> <input type="submit" value="Edit" id="idEdit" class="btn btn-outline-secondary" asp-action="EditLoginSemesterDetails" asp-route-id="@Global.StudentNumber"/>
             </div>
         </form>
     </div>
@@ -40,4 +40,3 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
-@*asp-action="EditLoginSemesterDetails" asp-route-id="@Global.StudentNumber*@
