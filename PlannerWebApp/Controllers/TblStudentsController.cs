@@ -46,8 +46,17 @@ namespace PlannerLibrary.Controllers
         public IActionResult OTPVerification()
         {
             ViewBag.OTPMessage = TempData["OTPMessage"];
+
             return View();
         }
+
+        public IActionResult ResendOTP()
+        {
+            // method to resend email to user
+            MailMe.SendMail(Global.StudentEmail);
+            return RedirectToAction("OTPVerification", "TblStudents");
+        }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -165,6 +174,7 @@ namespace PlannerLibrary.Controllers
                             tblStudent.StudentHashPassword = BCrypt.Net.BCrypt.HashPassword(student.StudentHashPassword);
 
                             Global.StudentNumber = student.StudentNumber;
+                            Global.StudentEmail = student.StudentEmail;
 
                             if (Verification.GenerateOTP())
                             {
@@ -173,7 +183,7 @@ namespace PlannerLibrary.Controllers
                                     TempData["OTPMessage"] = "A One Time Passcode (OTP) has been sent to " + student.StudentEmail + "."
                                                           + "\nPlease enter the OTP below to verify your Email Address."
                                                           + "\nIf you cannot locate the mail in your Inbox, please check"
-                                                          + "\n your Spam folder";
+                                                          + "\n your Spam folder.";
                                 }
                                 else
                                 {

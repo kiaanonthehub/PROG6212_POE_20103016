@@ -13,6 +13,8 @@ namespace PlannerLibrary.Models
         public static DateTime? StartDate;
         public static string HoursRemains;
         public static string DisplayRemHours;
+        public static string StudentEmail;
+        public static bool IsLoggedIn = false;
 
         public static int? NoOfWeeks;
         public static int currentWeekNo;
