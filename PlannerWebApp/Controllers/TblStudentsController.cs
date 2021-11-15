@@ -260,7 +260,15 @@ namespace PlannerLibrary.Controllers
                             Global.StartDate = await db.TblStudents.Where(x => x.StudentNumber == Global.StudentNumber).Select(x => x.StartDate).FirstOrDefaultAsync();
                             Global.NoOfWeeks = await db.TblStudents.Where(x => x.StudentNumber == Global.StudentNumber).Select(x => x.NumberOfWeeks).FirstOrDefaultAsync();
 
+                            if (Global.StartDate == null || Global.NoOfWeeks == null)
+                            {
+                                return RedirectToAction("SemesterDetails", "TblStudents");
+                            }
+                            else
+                            {
                             return RedirectToAction("LoginSemesterDetails", "TblStudents");
+                            }
+
                         }
                         else
                         {

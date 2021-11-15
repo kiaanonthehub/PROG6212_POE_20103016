@@ -49,7 +49,8 @@ namespace PlannerWebApp.Controllers
         public IActionResult SetDayReminder()
         {
             ViewData["ModuleId"] = new SelectList(_context.TblModules, "ModuleId", "ModuleId");
-            ViewBag.lstDaysOfWeek = ModuleReminder.lstDaysOfWeek;
+            ViewData["lstDaysOfWeek"] = new SelectList(ModuleReminder.lstDaysOfWeek, "lstDaysOfWeek");
+        
             return View();
         }
 
@@ -69,9 +70,9 @@ namespace PlannerWebApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.lstDaysOfWeek = ModuleReminder.lstDaysOfWeek;
+            ViewData["lstDaysOfWeek"] = new SelectList(ModuleReminder.lstDaysOfWeek, "lstDaysOfWeek");
             TblStudentModule tblStudentModule = new TblStudentModule();
-            ViewData["ModuleId"] = new SelectList(_context.TblModules, "ModuleId", "ModuleId", tblStudentModule.ModuleId);
+            ViewData["ModuleId"] = new SelectList(_context.TblStudentModules.Where(x=> x.StudentNumber == Global.StudentNumber), "ModuleId", "ModuleId", tblStudentModule.ModuleId);
             return View(moduleReminder);
         }
 
