@@ -112,7 +112,7 @@ namespace PlannerLibrary.Controllers
 
             if (Global.StartDate == null)
             {
-                return View();
+                return View(new TblStudent { StartDate = DateTime.Now});
             }
             else
             {
