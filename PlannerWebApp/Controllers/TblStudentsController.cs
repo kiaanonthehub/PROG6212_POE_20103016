@@ -80,6 +80,7 @@ namespace PlannerLibrary.Controllers
             {
                 if (verification.OneTimePin == Global.OneTimePin)
                 {
+                    Global.IsLoggedIn = true;
                     DateTime? filtDate = await db.TblStudents
                         .Where(x => x.StudentNumber == Global.StudentNumber)
                         .Select(x => x.StartDate).FirstOrDefaultAsync();

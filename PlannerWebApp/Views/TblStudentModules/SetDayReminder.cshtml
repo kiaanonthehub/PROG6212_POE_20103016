@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "SetDayReminder";
 }
-
+@{ Layout = "_Layout";}
 <h1>SetDayReminder</h1>
 
 <h4>TblStudentModule</h4>
@@ -15,7 +15,7 @@
 
             <div class="form-group">
                 <label asp-for="ModuleId" class="control-label"></label>
-                <select asp-for="ModuleId" class ="form-control" asp-items="ViewBag.ModuleId"></select>
+                <select asp-for="ModuleId" class="form-control" asp-items="ViewBag.ModuleId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="StudyReminderDay" class="control-label"></label>
@@ -23,7 +23,7 @@
             </div>
             <br />
             <div class="form-group">
-                <input type="submit" value="Set Reminder" class="btn btn-primary"/>
+                <input type="submit" value="Set Reminder" class="btn btn-primary" />
             </div>
         </form>
     </div>
