@@ -51,6 +51,11 @@ namespace PlannerLibrary.Controllers
             return View();
         }
 
+        public IActionResult NoConnection()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();

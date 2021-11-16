@@ -21,6 +21,13 @@ namespace PlannerLibrary.Controllers
         // GET: TblStudents
         public async Task<IActionResult> Index()
         {
+            // checks to see if there is a network connection
+            Global.NetworkConn = TestNetwork.CheckForInternetConnection();
+
+            if (Global.NetworkConn == false)
+            {
+                return RedirectToAction("NoConnection", "Home");
+            }
             return View(await _context.TblStudents.Where(x => x.StudentNumber == Global.StudentNumber).ToListAsync());
         }
 
@@ -45,6 +52,13 @@ namespace PlannerLibrary.Controllers
         // GET: TblStudents/OTPVerification
         public IActionResult OTPVerification()
         {
+            // checks to see if there is a network connection
+            Global.NetworkConn = TestNetwork.CheckForInternetConnection();
+
+            if (Global.NetworkConn == false)
+            {
+                return RedirectToAction("NoConnection", "Home");
+            }
             ViewBag.OTPMessage = TempData["OTPMessage"];
 
             return View();
@@ -149,6 +163,14 @@ namespace PlannerLibrary.Controllers
         // GET: Users/Signup
         public IActionResult Signup()
         {
+            // checks to see if there is a network connection
+            Global.NetworkConn = TestNetwork.CheckForInternetConnection();
+
+            if (Global.NetworkConn == false)
+            {
+                return RedirectToAction("NoConnection","Home");
+            }
+
             return View();
         }
 
@@ -229,6 +251,7 @@ namespace PlannerLibrary.Controllers
         // GET: Users/Login
         public IActionResult Login()
         {
+            // initialise all student fields
             Global.StudentNumber = 0;
             Global.StartDate = DateTime.Now;
             Global.HoursRemains = null;
@@ -241,6 +264,14 @@ namespace PlannerLibrary.Controllers
             Global.OneTimePin = 0;
             Global.StudentName = null;
 
+            // checks to see if there is a network connection
+            Global.NetworkConn = TestNetwork.CheckForInternetConnection();
+
+            if (Global.NetworkConn == false)
+            {
+                return RedirectToAction("NoConnection", "Home");
+            }
+
             return View();
         }
 
@@ -248,6 +279,13 @@ namespace PlannerLibrary.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login([Bind("StudentNumber,StudentHashPassword")] StudentLogin login)
         {
+            // checks to see if there is a network connection
+            Global.NetworkConn = TestNetwork.CheckForInternetConnection();
+
+            if (Global.NetworkConn == false)
+            {
+                return RedirectToAction("NoConnection", "Home");
+            }
             if (ModelState.IsValid)
             {
                 // validate if student login details exits
