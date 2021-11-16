@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using PlannerLibrary.Models;
 
 #nullable disable
 
@@ -26,7 +27,7 @@ namespace PlannerLibrary.DbModels
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=KIAAN;Database=Planner;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer(Global.AzureConnectionString);
             }
         }
 
