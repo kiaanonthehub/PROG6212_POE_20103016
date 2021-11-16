@@ -22,7 +22,7 @@ namespace PlannerLibrary.Controllers
         {
             string Today = null, Module = null, StudyReminder = null;
 
-            StudyReminder = db.TblStudentModules.Where(x => x.StudentNumber == Global.StudentNumber).Select(x => x.StudyReminderDay).First();
+            StudyReminder = db.TblStudentModules.Where(x => x.StudentNumber == Global.StudentNumber).Select(x => x.StudyReminderDay).FirstOrDefault();
 
             if (StudyReminder != null)
             {

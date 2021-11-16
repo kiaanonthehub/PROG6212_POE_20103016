@@ -21,7 +21,7 @@
                     }
                     else
                     {
-                        <input asp-for="StartDate" class="form-control" id="idDate" asp-format="{0:yyyy-MM-dd}" type="date" value="@Model.StartDate" />
+                        <input asp-for="StartDate" class="form-control" id="idDate" asp-format="{0:yyyy-MM-dd}" type="date" value="@Model.StartDate" min="2021-01-01" max="@Global.StartDate" />
                         <script>document.getElementById('idWeeks').value =@Global.StartDate; </script>
                         <span asp-validation-for="StartDate" class="text-danger"></span>
                     } }
@@ -29,7 +29,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="NumberOfWeeks" class="control-label"></label>
-                <input asp-for="NumberOfWeeks" class="form-control" id="idWeeks" />
+                <input asp-for="NumberOfWeeks" class="form-control" id="idWeeks" min="1" max="53"/>
                 <script>document.getElementById('idWeeks').value =@Global.NoOfWeeks; </script>
                 <span asp-validation-for="NumberOfWeeks" class="text-danger"></span>
             </div>
