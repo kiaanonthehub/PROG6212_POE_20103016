@@ -19,6 +19,8 @@ namespace PlannerLibrary.Models
         public static int? NoOfWeeks;
         public static int currentWeekNo;
         public static int OneTimePin;
+        public static string StudentName;
+        public static bool NetworkConn = false;  
         public static string AzureConnectionString = "Server=tcp:svr20103016.database.windows.net,1433;Initial Catalog=Planner;Persist Security Info=False;User ID=admin20103016;Password=Password1;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
         
         

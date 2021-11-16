@@ -55,9 +55,9 @@
             <div class="card-body">
                 <h5 class="card-title">Track Study-Hours</h5>
                 <p class="card-text">Navigate to Tracker View. This will enable the student add new modules , view the hours tracked for all modules and lastly delete existing records.</p>
-                <a href="#">Add Study-Hours </a>
+                <a href="@Url.Action("TrackStudies","TblTrackStudies")">Add Study-Hours </a>
                 <br>
-                <a href="#">View Study-Hours</a>
+                <a href="@Url.Action("Index","TblTrackStudies")">View Study-Hours</a>
             </div>
         </div>
     </div>
@@ -68,7 +68,7 @@
             <div class="card-body">
                 <h5 class="card-title">Study Reminder</h5>
                 <p class="card-text">Navigate to Study Remind View. This will enable the student to create or update existing study reminders for a specific module on a specific day.</p>
-                <a href="#">View/Update Study Reminder</a>
+                <a href="@Url.Action("SetDayReminder","TblStudentModules")">View/Update Study Reminder</a>
             </div>
         </div>
         <div class="card">
@@ -76,7 +76,7 @@
             <div class="card-body">
                 <h5 class="card-title">About</h5>
                 <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
-                <a href="#">View About</a>
+                <a href="@Url.Action("About","Home")">View About</a>
             </div>
         </div>
         <div class="card">
@@ -84,7 +84,7 @@
             <div class="card-body">
                 <h5 class="card-title">Privacy</h5>
                 <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
-                <a href="#">View Privacy</a>
+                <a href="@Url.Action("Privacy","Home")">View Privacy</a>
             </div>
         </div>
     </div>

@@ -18,6 +18,36 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
             </div>
+            <div class="nav justify-content-end">
+                @{if (Global.IsLoggedIn == true)
+                    {
+                                <ul class="nav justify-content-end">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="@Url.Action("Index","Home")">Dashboard</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="@Url.Action("About","Home")">About</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="@Url.Action("Privacy","Home")">Privacy</a>
+                                    </li>
+                                    @* drop down *@
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Settings
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            <a class="dropdown-item" href="@Url.Action("Index","TblStudents")">Profile</a>
+                                            @*<a class="dropdown-item" href="#">Another action</a>*@
+                                        </div>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" style="color: darkgray" href="@Url.Action("Login","TblStudents")">@Global.StudentName | Logout</a>
+                                    </li>
+                                </ul>
+                    }
+                }
+            </div>
         </nav>
     </header>
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">

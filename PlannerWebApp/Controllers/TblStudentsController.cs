@@ -21,7 +21,7 @@ namespace PlannerLibrary.Controllers
         // GET: TblStudents
         public async Task<IActionResult> Index()
         {
-            return View(await _context.TblStudents.ToListAsync());
+            return View(await _context.TblStudents.Where(x => x.StudentNumber == Global.StudentNumber).ToListAsync());
         }
 
         // GET: TblStudents/Details/5
@@ -95,9 +95,16 @@ namespace PlannerLibrary.Controllers
         // GET: TblStudents/OTP
         public IActionResult SemesterDetails()
         {
-            return View(new TblStudent
-            { StartDate = Global.StartDate }
-            );
+
+            if (Global.StartDate == null)
+            {
+                return View();
+            }
+            else
+            {
+                return View(new TblStudent { StartDate = Global.StartDate });
+            }
+
         }
 
         [HttpPost]
@@ -124,12 +131,13 @@ namespace PlannerLibrary.Controllers
         {
             Global.StartDate = await db.TblStudents.Where(x => x.StudentNumber == Global.StudentNumber).Select(x => x.StartDate).FirstOrDefaultAsync();
             Global.NoOfWeeks = await db.TblStudents.Where(x => x.StudentNumber == Global.StudentNumber).Select(x => x.NumberOfWeeks).FirstOrDefaultAsync();
+
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult LoginSemesterDetails ([Bind("StartDate,NumberOfWeeks")] Semester semester)
+        public IActionResult LoginSemesterDetails([Bind("StartDate,NumberOfWeeks")] Semester semester)
         {
             if (ModelState.IsValid)
             {
@@ -221,6 +229,18 @@ namespace PlannerLibrary.Controllers
         // GET: Users/Login
         public IActionResult Login()
         {
+            Global.StudentNumber = 0;
+            Global.StartDate = DateTime.Now;
+            Global.HoursRemains = null;
+            Global.DisplayRemHours = null;
+            Global.StudentEmail = null;
+            Global.IsLoggedIn = false;
+            Global.StudyReminder = false;
+            Global.NoOfWeeks = 0;
+            Global.currentWeekNo = 0;
+            Global.OneTimePin = 0;
+            Global.StudentName = null;
+
             return View();
         }
 
@@ -259,6 +279,8 @@ namespace PlannerLibrary.Controllers
                             Global.StudentNumber = login.StudentNumber;
                             Global.StartDate = await db.TblStudents.Where(x => x.StudentNumber == Global.StudentNumber).Select(x => x.StartDate).FirstOrDefaultAsync();
                             Global.NoOfWeeks = await db.TblStudents.Where(x => x.StudentNumber == Global.StudentNumber).Select(x => x.NumberOfWeeks).FirstOrDefaultAsync();
+                            Global.IsLoggedIn = true;
+                            Global.StudentName = await db.TblStudents.Where(x => x.StudentNumber == Global.StudentNumber).Select(x => String.Format("{0} {1}", x.StudentSurname, x.StudentName)).FirstAsync();
 
                             if (Global.StartDate == null || Global.NoOfWeeks == null)
                             {
@@ -266,8 +288,8 @@ namespace PlannerLibrary.Controllers
                             }
                             else
                             {
-                            //return RedirectToAction("LoginSemesterDetails", "TblStudents");
-                            return RedirectToAction("Index", "Home");
+                                //return RedirectToAction("LoginSemesterDetails", "TblStudents");
+                                return RedirectToAction("Index", "Home");
                             }
 
                         }

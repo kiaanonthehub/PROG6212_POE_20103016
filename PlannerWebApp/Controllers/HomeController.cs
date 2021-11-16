@@ -20,29 +20,43 @@ namespace PlannerLibrary.Controllers
 
         public IActionResult Index()
         {
+            string Today = null, Module = null, StudyReminder = null;
 
-            string Today = DateTime.Now.DayOfWeek.ToString();
+            StudyReminder = db.TblStudentModules.Where(x => x.StudentNumber == Global.StudentNumber).Select(x => x.StudyReminderDay).First();
 
-            string StudyReminder = db.TblStudentModules.Where(x => x.StudentNumber == Global.StudentNumber).Select(x => x.StudyReminderDay).First();
-
-            string Module = db.TblStudentModules.Where(x => x.StudentNumber == Global.StudentNumber).Select(x => x.ModuleId).First();
-
-            if (Today == StudyReminder)
+            if (StudyReminder != null)
             {
-                Global.StudyReminder = true;
-                ViewBag.StudyReminder = String.Format("Reminder! Study {0} for today {1}", Module, Today);
-                Global.StudyReminder = false;
-            }
-            else
-            {
-                Global.StudyReminder = false;
-            }
+                Today = DateTime.Now.DayOfWeek.ToString();
+                Module = db.TblStudentModules.Where(x => x.StudentNumber == Global.StudentNumber).Select(x => x.ModuleId).First();
 
+
+
+                if (Today == StudyReminder)
+                {
+                    Global.StudyReminder = true;
+                    ViewBag.StudyReminder = String.Format("Reminder! Study {0} for today {1}", Module, Today);
+                    Global.StudyReminder = false;
+                }
+                else
+                {
+                    Global.StudyReminder = false;
+                }
+
+            }
             return View();
         }
 
+        public IActionResult ErrorSignIn()
+        {
+            return View();
+        }
 
         public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        public IActionResult About()
         {
             return View();
         }
