@@ -368,55 +368,6 @@ namespace PlannerLibrary.Controllers
             return _context.TblStudents.Any(e => e.StudentNumber == id);
         }
 
-
-        // GET: TblStudents/Edit/5
-        public async Task<IActionResult> EditLoginSemesterDetails(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            TblStudent tblStudent = await _context.TblStudents.FindAsync(id);
-            if (tblStudent == null)
-            {
-                return NotFound();
-            }
-            return View(tblStudent);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditLoginSemesterDetails(int id, [Bind("StartDate,NumberOfWeeks")] TblStudent tblStudent)
-        {
-            if (id != tblStudent.StudentNumber)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(tblStudent);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TblStudentExists(tblStudent.StudentNumber))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction("AddModule", "TblModules");
-            }
-            return View(tblStudent);
-        }
-
     }
 }
 
